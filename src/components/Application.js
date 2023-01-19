@@ -1,24 +1,10 @@
-import React, { useState } from "react";
-import "components/Application.scss";
-import DayList from "./DayList";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const days = [
-  {
-    id: 1,
-    name: "Monday",
-    spots: 2,
-  },
-  {
-    id: 2,
-    name: "Tuesday",
-    spots: 5,
-  },
-  {
-    id: 3,
-    name: "Wednesday",
-    spots: 0,
-  },
-];
+import "components/Application.scss";
+import "components/Appointment"
+import DayList from "components/DayList";
+import Appointment from "components/Appointment";
 
 const appointments = {
   "1": {
@@ -59,8 +45,29 @@ const appointments = {
   }
 };
 
+
 export default function Application(props) {
-  const [day, setDay] = useState("Monday")
+
+  const [day, setDay] = useState("Monday");
+  const [days, setDays] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/days").then(response => {
+      console.log(response.data)
+      setDays(response.data)
+    })
+  }, [])
+
+  const schedule = Object.values(appointments).map((appointment) => {
+    return (
+      <Appointment
+        key={appointment.id}
+        {...appointment}
+      />
+    );
+  })
+  
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -71,14 +78,13 @@ export default function Application(props) {
         />
         <hr className="sidebar__separator sidebar--centered" />
         <nav className="sidebar__menu">
+
           <DayList
             days={days}
             value={day}
             onChange={setDay}
-          // days={days}
-          // day={"Monday"}
-          // setDay={day => console.log(day)}
           />
+
         </nav>
         <img
           className="sidebar__lhl sidebar--centered"
@@ -87,7 +93,8 @@ export default function Application(props) {
         />
       </section>
       <section className="schedule">
-        {/* {const schedule = Object.values(appointments).map(x=>x) } */}
+        {schedule}
+        <Appointment key="last" time="5pm" />
       </section>
     </main>
   );
