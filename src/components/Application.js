@@ -7,6 +7,7 @@ import DayList from "components/DayList";
 import Appointment from "components/Appointment";
 import { getAppointmentsForDay, getInterview } from "helpers/selectors";
 
+
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
@@ -31,13 +32,10 @@ export default function Application(props) {
     });
   }, [])
 
-
-
   const dailyAppointments = getAppointmentsForDay(state, state.day);
 
   const schedule = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview)
-    console.log("TESTING INTERVIEW", interview)
     return (
       <Appointment
         key={appointment.id}
@@ -47,8 +45,7 @@ export default function Application(props) {
       />
     );
   })
-  console.log("STATE INTERVIEWERS",state.interviewers)
-// console.log("schedule", schedule)
+  // console.log("STATE INTERVIEWERS",state.interviewers)
   return (
     <main className="layout">
       <section className="sidebar">
