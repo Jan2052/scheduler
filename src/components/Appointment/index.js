@@ -5,6 +5,7 @@ import Show from "./Show"
 import Empty from "./Empty"
 
 export default function Appointment(props) {
+  console.log("props.interview",props.interview)
   return (
     <>
       <article className="appointment">
@@ -12,7 +13,7 @@ export default function Appointment(props) {
         {props.interview ? (
           <Show 
             student={props.interview.student} 
-            interviewer={props.interview.interviewer.name} /> 
+            interviewer={props.interview.interviewer} /> 
           ) : (
             <Empty />
           )}
