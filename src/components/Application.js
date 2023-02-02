@@ -5,14 +5,15 @@ import "components/Application.scss";
 import "components/Appointment"
 import DayList from "components/DayList";
 import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview } from "helpers/selectors";
+import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
 
 
 export default function Application(props) {
   const [state, setState] = useState({
     day: "Monday",
     days: [],
-    appointments: {}
+    appointments: {},
+    interviewers: []
   });
 
   const setDay = day => setState({ ...state, day });
@@ -36,16 +37,19 @@ export default function Application(props) {
 
   const schedule = dailyAppointments.map(appointment => {
     const interview = getInterview(state, appointment.interview)
-    return (
+    const interviewers = getInterviewersForDay(state, state.day)
+        console.log("APPOINTMENT.INTERVIEWERS",interviewers)
+        return (
       <Appointment
         key={appointment.id}
         id={appointment.id}
         time={appointment.time}
         interview={interview}
+        interviewers={interviewers}
       />
-    );
+    );        
   })
-  // console.log("STATE INTERVIEWERS",state.interviewers)
+
   return (
     <main className="layout">
       <section className="sidebar">
@@ -72,7 +76,7 @@ export default function Application(props) {
       </section>
       <section className="schedule">
         {schedule}
-        {/* <Appointment key="last" time="5pm" /> */}
+        <Appointment key="last" time="5pm" />
       </section>
     </main>
   );

@@ -11,19 +11,17 @@ export function getInterview(state, interview) {
   if (interview) {
     return {
       student: interview.student,
-      interviewers: {
-        "1": {  
-          "id": 1,
-          "name": "Sylvia Palmer",
-          "avatar": "https://i.imgur.com/LpaY82x.png"
-        },
-        "2": {
-          id: 2,
-          name: "Tori Malcolm",
-          avatar: "https://i.imgur.com/Nmx0Qxo.png"
-        }
-      }
+      interviewer: state.interviewers[interview.interviewer]
     }
   }
   return null;
+}
+
+export function getInterviewersForDay(state, day) {
+  const filteredDays = state.days.find((x) => x.name === day);
+  if (!filteredDays) {
+    return [];
+  }
+  const interviewers = filteredDays.interviewers.map((id) => state.interviewers[id])
+  return interviewers
 }
