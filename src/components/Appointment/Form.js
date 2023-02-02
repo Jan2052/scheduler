@@ -16,6 +16,8 @@ export default function Form(props) {
     props.onCancel()
   }
 
+  
+
   return (
     <main className="appointment__card appointment__card--create">
       <section className="appointment__card-left">
@@ -27,6 +29,7 @@ export default function Form(props) {
             placeholder="Enter Student Name"
             value={student}
             onChange={(event) => setStudent(event.target.value)}
+
           />
         </form>
         <InterviewerList
