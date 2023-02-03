@@ -6,6 +6,7 @@ import Empty from "./Empty"
 import Form from "./Form"
 import Status from "./Status"
 import Confirm from "./Confirm"
+import Error from "./Error"
 import useVisualMode from "hooks/useVisualMode"
 
 const EMPTY = "EMPTY";
@@ -15,6 +16,8 @@ const SAVING = "SAVING";
 const DELETING = "DELETING";
 const CONFIRM = "CONFIRM";
 const EDIT = "EDIT";
+const ERROR_SAVE = "ERROR_SAVE";
+const ERROR_DELETE = "ERROR_DELETE";
 
 export default function Appointment(props) {
   const { mode, transition, back } = useVisualMode(
@@ -27,16 +30,18 @@ export default function Appointment(props) {
       interviewer
     };
     transition(SAVING);
-    props.bookInterview(props.id, interview).then(() => {
-      transition(SHOW);
-    })
+    props
+      .bookInterview(props.id, interview)
+      .then(() => transition(SHOW))
+      .catch(error => transition(ERROR_SAVE, true));
   }
 
-  const deleteInterview = () => {
-    transition(DELETING)
-    props.deleteInterview(props.id).then(() => {
-      transition(EMPTY);
-    })
+  const destroy = (event) => {
+    transition(DELETING, true)
+    props
+      .deleteInterview(props.id)
+      .then(() => transition(EMPTY))
+      .catch(error => {transition(ERROR_DELETE, true)})
   }
 
   return (
@@ -46,7 +51,7 @@ export default function Appointment(props) {
         {mode === EMPTY && (<Empty onAdd={() => transition(CREATE)} />)}
         {mode === SHOW && (
           <Show
-            student={props.interview.student}
+            student={props.interview.student} //'student' often gives errors of null 
             interviewer={props.interview.interviewer}
             onDelete={() => transition(CONFIRM)}
             onEdit={() => transition(EDIT)}
@@ -63,9 +68,8 @@ export default function Appointment(props) {
         {mode === CONFIRM && (
           <Confirm
             message={"Are you sure you would like to delete?"}
-            // onCancel={()=> transition(SHOW)}
             onCancel={() => back(SHOW)}
-            onConfirm={deleteInterview}
+            onConfirm={destroy}
           />)}
         {mode === EDIT && (
           <Form
@@ -75,6 +79,16 @@ export default function Appointment(props) {
             onSave={save}
           />
         )}
+        {mode === ERROR_SAVE && (
+          <Error
+            message={"Could not save appointment."}
+            onClose={() => transition(EDIT)}
+          />)}
+        {mode === ERROR_DELETE && (
+          <Error
+            message={"Could not cancel appointment."}
+            onClose={back} // not working
+          />)}
       </article>
     </>
   )
