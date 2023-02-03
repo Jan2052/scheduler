@@ -42,20 +42,24 @@ export default function Application(props) {
       ...state.appointments,
       [id]: appointment
     };
-    setState({
-      ...state,
-      appointments
-    });
-    console.log("bookInterview", bookInterview);
-    // console.log("bookInterview", id, interview);
+    return axios.put(`/api/appointments/${id}`, { interview })
+  .then(setState({
+        ...state,
+        appointments
+      }))
   }
 
-  const appointments = getAppointmentsForDay(state, state.day);
+  //   console.log(id, interview);
+  //   return axios.put(`/api/appointments/${id}`, { interview })
+  //     .then(setState({ ...state, appointments }));
+  // }
 
+  const appointments = getAppointmentsForDay(state, state.day);
+  const interviewers = getInterviewersForDay(state, state.day);
 
   const schedule = appointments.map(appointment => {
     const interview = getInterview(state, appointment.interview);
-    const interviewers = getInterviewersForDay(state, state.day);
+
     // console.log("APPOINTMENT.INTERVIEWERS", interviewers)
     return (
       <Appointment
