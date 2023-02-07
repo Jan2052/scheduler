@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 export default function useApplicationData() {
 
@@ -30,6 +30,19 @@ export default function useApplicationData() {
       })
   }, [])
 
+  const updateSpots = (id, available) => {
+    state.days.forEach((day) => {
+      if (day.appointments.includes(id)) {
+        if (available) {
+          day.spots += 1;
+        } else {
+          day.spots -= 1;
+        }
+      }
+    })
+  }
+
+
   function bookInterview(id, interview) {
     const appointment = {
       ...state.appointments[id],
@@ -40,7 +53,10 @@ export default function useApplicationData() {
       [id]: appointment
     };
     return axios.put(`/api/appointments/${id}`, { interview })
-      .then(setState({ ...state, appointments })) // this one doesn't need ()=>
+      .then(() => {
+        updateSpots(id, false) // <Added this
+        setState({ ...state, appointments })
+      })
   }
 
   const cancelInterview = (id) => {
@@ -53,7 +69,8 @@ export default function useApplicationData() {
       [id]: appointment
     };
     return axios.delete(`/api/appointments/${id}`, { appointments })
-      .then(() => { //not sure why ()=> is needed here but not in bookInterview
+      .then(() => {
+        updateSpots(id, true) // <Added this
         setState({ ...state, appointments })
       })
   }
