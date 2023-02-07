@@ -1,4 +1,5 @@
-import React from "react";
+// import React from "react";
+import React, { useEffect, useState } from "react";
 import classNames from "classnames";
 import "components/DayListItem.scss";
 
@@ -9,13 +10,28 @@ export default function DayListItem(props) {
     "day-list__item--full": props.spots === 0
   });
 
+
+
+  const setSpots = spots => {
+    if (!spots){
+      return "no spots remaining"
+    }
+    if (spots === 1){
+      return "1 spot remaining"
+    }
+    if (spots > 1){
+      return `${spots} spots remaining`
+    }
+  }
+
   return (
     <li className={dayClass} onClick={() => props.setDay(props.name)}>
       <h2 className="text--regular">{props.name}</h2>
       <h3 className="text--light">
-        {!props.spots && <span>no spots remaining</span>}
+        {/* {!props.spots && <span>no spots remaining</span>}
         {props.spots === 1 && <span>1 spot remaining</span>}
-        {props.spots > 1 && <span>{props.spots} spots remaining</span>}
+        {props.spots > 1 && <span>{props.spots}spots remaining</span>} */}
+        {setSpots(props.spots)}
       </h3>
     </li>
   );

@@ -39,7 +39,7 @@ export default function Appointment(props) {
   const destroy = (event) => {
     transition(DELETING, true)
     props
-      .deleteInterview(props.id)
+      .cancelInterview(props.id)
       .then(() => transition(EMPTY))
       .catch(error => {transition(ERROR_DELETE, true)})
   }
@@ -75,7 +75,7 @@ export default function Appointment(props) {
           <Form
             student={props.interview.student}
             interviewers={props.interviewers}
-            onCancel={() => back(EMPTY)}
+            onCancel={() => back(SHOW)}
             onSave={save}
           />
         )}
