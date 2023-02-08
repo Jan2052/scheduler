@@ -1,30 +1,22 @@
+/*
+  We are rendering `<Application />` down below, so we need React.createElement
+*/
 import React from "react";
 
-import { render, cleanup } from "@testing-library/react";
+/*
+  We import our helper functions from the react-testing-library
+  The render function allows us to render Components
+*/
+import { render } from "@testing-library/react";
 
+/*
+  We import the component that we are testing
+*/
 import Application from "components/Application";
 
-afterEach(cleanup);
-
+/*
+  A test that renders a React Component
+*/
 it("renders without crashing", () => {
   render(<Application />);
-});
-
-test("getInterview returns an object with the interviewer data", () => {
-  const result = getInterview(state, state.appointments["3"].interview);
-  expect(result).toEqual(
-    expect.objectContaining({
-      student: expect.any(String),
-      interviewer: expect.objectContaining({
-        id: expect.any(Number),
-        name: expect.any(String),
-        avatar: expect.any(String)
-      })
-    })
-  );
-});
-
-test("getInterview returns null if no interview is booked", () => {
-  const result = getInterview(state, state.appointments["2"].interview);
-  expect(result).toBeNull();
 });
