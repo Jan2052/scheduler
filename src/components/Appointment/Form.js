@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 export default function Form(props) {
-  // console.log(props)
   const [student, setStudent] = useState(props.student || "");
   const [interviewer, setInterviewer] = useState(props.interviewer || null);
   const [error, setError] = useState("");
 
   const reset = () => {
     setStudent("")
+    setError("")
     setInterviewer(null)
   }
 
@@ -18,10 +18,6 @@ export default function Form(props) {
     reset()
     props.onCancel()
   }
-
-  // const save = () => {
-  //   props.onSave(student, interviewer)
-  // }
 
   function validate() {
     if (student === "") {
@@ -32,9 +28,9 @@ export default function Form(props) {
       setError("Please select an interviewer");
       return;
     }
+    setError("")
     props.onSave(student, interviewer);
   }
-
 
   return (
     <main className="appointment__card appointment__card--create">
