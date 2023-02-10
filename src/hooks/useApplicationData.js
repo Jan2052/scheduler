@@ -13,9 +13,9 @@ export default function useApplicationData() {
 
   useEffect(() => {
     Promise.all([
-      axios.get('/api/days'),
-      axios.get('/api/appointments'),
-      axios.get('/api/interviewers')
+      axios.get('http://localhost:8001/api/days'),
+      axios.get('http://localhost:8001/api/appointments'),
+      axios.get('http://localhost:8001/api/interviewers')
     ])
       .then((all) => {
         setState(prev => ({
@@ -35,14 +35,13 @@ export default function useApplicationData() {
       if (day.appointments.includes(id)) {
         if (shouldAddSpot) {
           day.spots += 1;
-        } 
-        if (!shouldAddSpot && day.spots > 0){
+        }
+        if (!shouldAddSpot && day.spots > 0) {
           day.spots -= 1;
         }
       }
     })
   }
-
 
   function bookInterview(id, interview) {
     const appointment = {
