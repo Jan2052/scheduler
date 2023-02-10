@@ -20,7 +20,7 @@ export default function DayListItem(props) {
       return `${spots} spots remaining`
     }
   }
-
+  
   return (
     <li className={dayClass} onClick={() => props.setDay(props.name)} data-testid="day">
       <h2 className="text--regular">{props.name}</h2>

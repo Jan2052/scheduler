@@ -98,10 +98,12 @@ describe("Application", () => {
     await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
     // console.log(prettyDOM(appointment));
 
-    const day = getAllByTestId(container, "day").find(day => // container is <li ?? in DayListItem
+    const day = getAllByTestId(container, "day").find(day => // container is <li in DayListItem
       queryByText(day, "Monday")
     );
     console.log(prettyDOM(day));
-    expect(getByText(day, "no spots remaining")).toBeInTheDocument(); // ERROR don't know why but skipping ahead
+    expect(getByText(day, "no spots remaining")).toBeInTheDocument(); // ERROR
   });
 })
+// To check our tests run in terminal
+// npm test -- --coverage --watchAll=false

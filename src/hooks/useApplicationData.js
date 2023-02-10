@@ -35,7 +35,8 @@ export default function useApplicationData() {
       if (day.appointments.includes(id)) {
         if (shouldAddSpot) {
           day.spots += 1;
-        } else {
+        } 
+        if (!shouldAddSpot && day.spots > 0){
           day.spots -= 1;
         }
       }
