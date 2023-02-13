@@ -1,5 +1,8 @@
 # Interview Scheduler
 
+Markdown for images
+!["Screenshot description](URL)
+
 ## Setup
 
 Install dependencies with `npm install`.

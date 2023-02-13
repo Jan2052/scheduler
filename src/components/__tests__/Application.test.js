@@ -8,18 +8,10 @@ import {
   waitForElement,
   getByText,
   prettyDOM,
-  ByLabelText,
-  ByPlaceholderText,
-  ByText,
-  ByDisplayValue,
-  ByAltText,
-  ByTitle,
-  ByRole,
   getAllByTestId,
   getByPlaceholderText,
   getByAltText,
   queryByText,
-  queryAllByAltText,
   queryByAltText
 } from "@testing-library/react";
 
@@ -30,9 +22,6 @@ import Application from "components/Application";
 
 afterEach(cleanup);
 describe("Application", () => {
-  // xit("renders without crashing", () => {
-  //   render(<Application />);
-  // });
 
   it("1. defaults to Monday and changes the schedule when a new day is selected", () => {
     const { getByText } = render(<Application />);
@@ -40,20 +29,10 @@ describe("Application", () => {
     return waitForElement(() => getByText("Monday"));
   });
 
-  // it("defaults to Monday and changes the schedule when a new day is selected", () => {
-  //   const { getByText } = render(<Application />);
-
-  //   return waitForElement(() => getByText("Monday")).then(() => {
-  //     fireEvent.click(getByText("Tuesday"));
-  //     expect(getByText("Leopold Silvers")).toBeInTheDocument();
-  //   });
-  // });
-  //^^^^^Replaced^^^^^
   it("2. changes the schedule when a new day is selected", async () => {//async
     const { getByText } = render(<Application />);
 
     await waitForElement(() => getByText("Monday"));//await
-
 
     fireEvent.click(getByText("Tuesday"));
 
@@ -98,61 +77,42 @@ describe("Application", () => {
     console.log(prettyDOM(day));
     expect(getByText(day, "no spots remaining")).toBeInTheDocument();
   });
-  /*
-  CANCELLING Test Plan
-    
- // 1. Render the Application.
- // 2. Wait until the text "Archie Cohen" is displayed.
- // 3. Click the "Delete" button on the booked appointment.
- // 4. Check that the confirmation message is shown.
- // 5. Click the "Confirm" button on the confirmation.
- // 6. Check that the element with the text "Deleting" is displayed.
- // 7. Wait until the element with the "Add" button is displayed.
- // 8. Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
- // */
-  // it("4. loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
-  //   // 1. Render the Application.
-  //   const { container, debug } = render(<Application />);
 
-  //   // 2. Wait until the text "Archie Cohen" is displayed.
-  //   await waitForElement(() => getByText(container, "Archie Cohen"));
+  it("4. loads data, cancels an interview and increases the spots remaining for Monday by 1", async () => {
+    // 1. Render the Application.
+    const { container, debug } = render(<Application />);
 
-  //   // 3. Click the "Delete" button on the booked appointment.
-  //   const appointment = getAllByTestId(container, "appointment").find(
-  //     appointment => queryByText(appointment, "Archie Cohen")
-  //   );
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
 
-  //   fireEvent.click(queryByAltText(appointment, "Delete"));
-  //   // 4. Check that the confirmation message is shown.
-  //   expect(
-  //     getByText(appointment, "Are you sure you would like to delete?")
-  //   ).toBeInTheDocument();
+    // 3. Click the "Delete" button on the booked appointment.
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
 
-  //   // 5. Click the "Confirm" button on the confirmation.
-  //   fireEvent.click(queryByText(appointment, "Confirm"));
+    fireEvent.click(queryByAltText(appointment, "Delete"));
+    // 4. Check that the confirmation message is shown.
+    expect(
+      getByText(appointment, "Are you sure you would like to delete?")
+    ).toBeInTheDocument();
 
-  //   // 6. Check that the element with the text "Deleting" is displayed.
-  //   expect(getByText(appointment, "Deleting")).toBeInTheDocument();
+    // 5. Click the "Confirm" button on the confirmation.
+    fireEvent.click(queryByText(appointment, "Confirm"));
 
-  //   // 7. Wait until the element with the "Add" button is displayed.
-  //   await waitForElement(() => getByAltText(appointment, "Add"));
+    // 6. Check that the element with the text "Deleting" is displayed.
+    expect(getByText(appointment, "Deleting")).toBeInTheDocument();
 
-  //   // 8. Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
-  //   const day = getAllByTestId(container, "day").find(day =>
-  //     queryByText(day, "Monday")
-  //   );
+    // 7. Wait until the element with the "Add" button is displayed.
+    await waitForElement(() => getByAltText(appointment, "Add"));
 
-  //   expect(getByText(day, "2 spots remaining")).toBeInTheDocument(); // FAILED shows "1 spot remaining"
-  // });
+    // 8. Check that the DayListItem with the text "Monday" also has the text "2 spots remaining".
+    const day = getAllByTestId(container, "day").find(day =>
+      queryByText(day, "Monday")
+    );
 
-  /*
-  EDITING
-    // We want to start by finding an existing interview.
-    // With the existing interview we want to find the edit button.
-    // We change the name and save the interview.
-    // We don't want the spots to change for "Monday", since this is an edit.
-    // Read the errors because sometimes they say that await cannot be outside of an async function.
-  */
+    expect(getByText(day, "1 spots remaining")).toBeInTheDocument();
+  });
+
   it("5. loads data, edits an interview and keeps the spots remaining for Monday the same", async () => {
     // 1. Render the Application.
     const { container, debug } = render(<Application />);
@@ -216,5 +176,13 @@ describe("Application", () => {
   it("7. shows the delete error when failing to delete an existing appointment", async () => {
     axios.put.mockRejectedValueOnce();
     const { container, debug } = render(<Application />);
+
+    // 2. Wait until the text "Archie Cohen" is displayed.
+    await waitForElement(() => getByText(container, "Archie Cohen"));
+
+    // 3. Click the "Delete" button on the booked appointment.
+    const appointment = getAllByTestId(container, "appointment").find(
+      appointment => queryByText(appointment, "Archie Cohen")
+    );
   });
 })
