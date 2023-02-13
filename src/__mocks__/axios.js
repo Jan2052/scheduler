@@ -58,6 +58,7 @@ const fixtures = {
 export default {
   // defaults: { baseURL: "" },
   get: jest.fn(url => {
+    // console.log("CHECKING AXIOS", url)
     if (url === "/api/days") {
       return Promise.resolve({
         status: 200,

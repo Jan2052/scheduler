@@ -57,7 +57,7 @@ export default function Appointment(props) {
         {mode === EMPTY && (<Empty onAdd={() => transition(CREATE)} />)}
         {mode === SHOW && (
           <Show
-            student={props.interview.student} //'student' often gives errors of null 
+            student={props.interview.student}
             interviewer={props.interview.interviewer}
             onDelete={() => transition(CONFIRM)}
             onEdit={() => transition(EDIT)}
@@ -94,7 +94,7 @@ export default function Appointment(props) {
         {mode === ERROR_DELETE && (
           <Error
             message={"Could not cancel appointment."}
-            onClose={back} // not working
+            onClose={back}
           />)}
       </article>
     </>
