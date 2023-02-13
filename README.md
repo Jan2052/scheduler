@@ -31,6 +31,13 @@ Appointment booked!
 ## Setup
 
 Install dependencies with `npm install`.
+Install scheduler-api https://github.com/Jan2052/scheduler-api
+
+## Running Scheduler-api
+
+```sh
+npm start
+```
 
 ## Running Webpack Development Server
 
