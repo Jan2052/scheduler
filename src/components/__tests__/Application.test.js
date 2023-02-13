@@ -7,7 +7,6 @@ import {
   fireEvent,
   waitForElement,
   getByText,
-  prettyDOM,
   getAllByTestId,
   getByPlaceholderText,
   getByAltText,
@@ -16,10 +15,6 @@ import {
 } from "@testing-library/react";
 
 import Application from "components/Application";
-
-// To check our tests run in terminal
-// npm test -- --coverage --watchAll=false
-// console.log(prettyDOM(appointment));
 
 afterEach(cleanup);
 describe("Application", () => {
@@ -30,48 +25,39 @@ describe("Application", () => {
     return waitForElement(() => getByText("Monday"));
   });
 
-  it("2. changes the schedule when a new day is selected", async () => {//async
+  it("2. changes the schedule when a new day is selected", async () => {
     const { getByText } = render(<Application />);
 
-    await waitForElement(() => getByText("Monday"));//await
+    await waitForElement(() => getByText("Monday"));
 
     fireEvent.click(getByText("Tuesday"));
 
-    expect(getByText("Leopold Silvers")).toBeInTheDocument(); // .not.toBeInTheDocument should fail
+    expect(getByText("Leopold Silvers")).toBeInTheDocument();
   });
 
   it("3. loads data, books an interview and reduces the spots remaining for Monday by 1", async () => {
     const { container, debug } = render(<Application />);
 
-    // 2. Wait until the text "Archie Cohen" is displayed.
     await waitForElement(() => getByText(container, "Archie Cohen"));
 
-    // 3. Click the "Add" button on the first empty appointment.
     const appointments = getAllByTestId(container, "appointment");//getAllByTestId finds by data-testid attribute that we input (data-testid="appointment") into index.js
     const appointment = appointments[0]; //first appointment is 12pm and currently interview is set to null (in our axios.js mock file)
 
-    fireEvent.click(getByAltText(appointment, "Add"));// getByAltText finds "Add" by image alt attribute
+    fireEvent.click(getByAltText(appointment, "Add"));
 
-    // 4. Enter the name "Lydia Miller-Jones" into the input with the placeholder "Enter Student Name".
     fireEvent.change(getByPlaceholderText(appointment, /enter student name/i), {
-      target: { value: "Lydia Miller-Jones" } //input student name
+      target: { value: "Lydia Miller-Jones" }
     });
 
-    // 5. Click the first interviewer in the list.
-    fireEvent.click(getByAltText(appointment, "Sylvia Palmer")); //chosing interviewer by image alt attribute
+    fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
-    // 6. Click the "Save" button on that same appointment.
     fireEvent.click(getByText(appointment, "Save"));
 
-    // 7. Check that the element with the text "Saving" is displayed.
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
 
-    // 8. Wait until the element with the text "Lydia Miller-Jones" is displayed.
     await waitForElement(() => getByText(appointment, "Lydia Miller-Jones"));
 
-
-    // 9. Check that the DayListItem with the text "Monday" also has the text "no spots remaining".
-    const day = getAllByTestId(container, "day").find(day => // container is <li in DayListItem
+    const day = getAllByTestId(container, "day").find(day =>
       queryByText(day, "Monday")
     );
 
