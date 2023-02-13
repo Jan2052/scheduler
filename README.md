@@ -33,18 +33,6 @@ Appointment booked!
 Install dependencies with `npm install`.
 Install scheduler-api https://github.com/Jan2052/scheduler-api and follow setup instructions
 
-## Running Scheduler-api
-Running the server normally
-```sh
-npm start
-```
-
-Running the server so it returns an error when saving/deleting for testing the client's error handling capabilities
-```sh
-npm run error
-```
-
-
 ## Running Webpack Development Server
 
 ```sh
