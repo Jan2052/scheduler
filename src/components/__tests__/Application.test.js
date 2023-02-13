@@ -13,11 +13,6 @@ import {
   getByAltText,
   queryByText,
   queryByAltText,
-  getAllByAltText,
-  queryAllByAltText,
-  findByAltText,
-  getByDisplayValue,
-  getAllByText,
 } from "@testing-library/react";
 
 import Application from "components/Application";
