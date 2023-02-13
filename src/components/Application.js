@@ -1,24 +1,24 @@
-import React from "react";
+import React from 'react';
 
-import "components/Application.scss";
-import "components/Appointment"
-import DayList from "components/DayList";
-import Appointment from "components/Appointment";
-import { getAppointmentsForDay, getInterview, getInterviewersForDay } from "helpers/selectors";
-import useApplicationData from "hooks/useApplicationData";
+import 'components/Application.scss';
+import 'components/Appointment';
+import DayList from 'components/DayList';
+import Appointment from 'components/Appointment';
+import {getAppointmentsForDay, getInterview, getInterviewersForDay} from 'helpers/selectors';
+import useApplicationData from 'hooks/useApplicationData';
 
 export default function Application(props) {
   const {
     state,
     setDay,
     bookInterview,
-    cancelInterview
+    cancelInterview,
   } = useApplicationData();
 
   const interviewers = getInterviewersForDay(state, state.day);
   const appointments = getAppointmentsForDay(state, state.day);
 
-  const schedule = appointments.map(appointment => {
+  const schedule = appointments.map((appointment) => {
     const interview = getInterview(state, appointment.interview);
 
     return (
@@ -32,7 +32,7 @@ export default function Application(props) {
         cancelInterview={cancelInterview}
       />
     );
-  })
+  });
 
   return (
     <main className="layout">
@@ -64,4 +64,4 @@ export default function Application(props) {
       </section>
     </main>
   );
-}
+};
