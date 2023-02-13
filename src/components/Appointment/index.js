@@ -81,19 +81,19 @@ export default function Appointment(props) {
             student={props.interview.student}
             interviewers={props.interviewers}
             interviewer={props.interview.interviewer.id}
-            onCancel={() => back(SHOW)}
+            onCancel={back}
             onSave={save}
           />
         )}
         {mode === ERROR_SAVE && (
           <Error
             message={"Could not save appointment."}
-            onClose={() => transition(EDIT)}
+            onClose={back}
           />)}
         {mode === ERROR_DELETE && (
           <Error
             message={"Could not cancel appointment."}
-            onClose={back}
+            onClose={() => back(SHOW)}
           />)}
       </article>
     </>
