@@ -1,4 +1,5 @@
 import React from "react"
+
 import "./styles.scss"
 import Header from "./Header"
 import Show from "./Show"
@@ -35,7 +36,6 @@ export default function Appointment(props) {
       .then(() => transition(SHOW))
       .catch(error => {
         transition(ERROR_SAVE, true)
-        // console.log("ERROR SAVING", error)
       });
   }
 
@@ -46,7 +46,6 @@ export default function Appointment(props) {
       .then(() => transition(EMPTY))
       .catch(error => {
         transition(ERROR_DELETE, true)
-        // console.log("ERROR DELETING",error)
       })
   }
 

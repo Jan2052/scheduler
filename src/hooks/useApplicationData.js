@@ -26,7 +26,6 @@ export default function useApplicationData() {
         }));
       })
       .catch((error) => {
-        // console.log("ERROR", error.message)
       })
   }, [])
 

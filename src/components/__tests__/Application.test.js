@@ -74,7 +74,7 @@ describe("Application", () => {
     const day = getAllByTestId(container, "day").find(day => // container is <li in DayListItem
       queryByText(day, "Monday")
     );
-    // console.log(prettyDOM(day));
+
     expect(getByText(day, "no spots remaining")).toBeInTheDocument();
   });
 
@@ -133,7 +133,6 @@ describe("Application", () => {
     expect(getByText(day, "1 spot remaining")).toBeInTheDocument();
   });
 
-  //ERROR HANDLING - SAVE
   it("6. shows the save error when failing to save an appointment", async () => {
     axios.put.mockRejectedValueOnce();
     const { container, debug } = render(<Application />);
@@ -152,16 +151,15 @@ describe("Application", () => {
 
     fireEvent.click(getByAltText(appointment, "Sylvia Palmer"));
 
-    // 6. Click the "Save" button on that same appointment.
+
     fireEvent.click(getByText(appointment, "Save"));
-    // 7. Check that the element with the text "Saving" is displayed.
+
     expect(getByText(appointment, "Saving")).toBeInTheDocument();
-    // 8. Wait until the ERROR_SAVE message is displayed.
+
     await waitForElement(() => getByText(appointment, "Could not save appointment."));
     expect(getByText(appointment, "Could not save appointment.")).toBeInTheDocument();
   });
 
-  //ERROR HANDLING - DELETE
   it("7. shows the delete error when failing to delete an existing appointment", async () => {
     axios.delete.mockRejectedValueOnce();
     const { container, debug } = render(<Application />);
@@ -180,7 +178,7 @@ describe("Application", () => {
 
     expect(getByText(appointment, "Deleting")).toBeInTheDocument();
 
-    // 8. Wait until the ERROR_DELETE message is displayed.
+
     await waitForElement(() => getByText(appointment, "Could not cancel appointment."));
     fireEvent.click(getByAltText(appointment, "Close"));
 
