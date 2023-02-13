@@ -29,20 +29,23 @@ export default function useApplicationData() {
       })
   }, [])
 
-  const updateSpots = (id, shouldAddSpot) => {
-    state.days.forEach((day) => {
-      if (day.appointments.includes(id)) {
-        if (shouldAddSpot) {
-          day.spots += 1;
+  const updateSpots = (id, shouldAddSpot, mode) => {
+    if (mode !== "EDIT") {
+      state.days.forEach((day) => {
+        if (day.appointments.includes(id)) {
+          if (shouldAddSpot) {
+            day.spots += 1;
+          }
+          if (!shouldAddSpot && day.spots > 0) {
+            day.spots -= 1;
+          }
         }
-        if (!shouldAddSpot && day.spots > 0) {
-          day.spots -= 1;
-        }
-      }
-    })
+      })
+    }
+
   }
 
-  function bookInterview(id, interview) {
+  function bookInterview(id, interview, mode) {
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -53,12 +56,12 @@ export default function useApplicationData() {
     };
     return axios.put(`/api/appointments/${id}`, { interview })
       .then(() => {
-        updateSpots(id, false)
+        updateSpots(id, false, mode)
         setState({ ...state, appointments })
       })
   }
 
-  const cancelInterview = (id) => {
+  const cancelInterview = (id, mode) => {
     const appointment = {
       ...state.appointments[id],
       interview: null
@@ -69,7 +72,7 @@ export default function useApplicationData() {
     };
     return axios.delete(`/api/appointments/${id}`, { appointments })
       .then(() => {
-        updateSpots(id, true)
+        updateSpots(id, true, mode)
         setState({ ...state, appointments })
       })
   }

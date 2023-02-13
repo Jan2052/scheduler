@@ -32,7 +32,7 @@ export default function Appointment(props) {
     };
     transition(SAVING);
     props
-      .bookInterview(props.id, interview)
+      .bookInterview(props.id, interview, mode)
       .then(() => transition(SHOW))
       .catch(error => {
         transition(ERROR_SAVE, true)
@@ -42,7 +42,7 @@ export default function Appointment(props) {
   const destroy = (event) => {
     transition(DELETING, true)
     props
-      .cancelInterview(props.id)
+      .cancelInterview(props.id, mode)
       .then(() => transition(EMPTY))
       .catch(error => {
         transition(ERROR_DELETE, true)
